@@ -25,10 +25,11 @@ specific (name real things: stairs, trees, chai stall, rooftop, park gate)."""
 
 
 TIME_WORDS = [
-    (r"(\d+)\s*(?:hours?|hrs?)", lambda m: int(m.group(1)) * 60),
-    (r"(\d+)\s*(?:minutes?|mins?)", lambda m: int(m.group(1))),
-    (r"an?\s+hour", lambda m: 60),
     (r"half an? hour", lambda m: 30),
+    (r"an?\s+hour", lambda m: 60),
+    (r"(\d+(?:\.\d+)?)\s*(?:hours?|hrs?)(?:\s*(?:and\s*)?(\d+)\s*(?:minutes?|mins?))?",
+     lambda m: round(float(m.group(1)) * 60) + int(m.group(2) or 0)),
+    (r"(\d+)\s*(?:minutes?|mins?)", lambda m: int(m.group(1))),
 ]
 ENERGY_WORDS = {
     "low": ["tired", "exhausted", "low energy", "lazy", "sleepy", "drained", "burnt"],
@@ -54,7 +55,7 @@ def extract_energy(text):
 
 def offline_plan(minutes, energy):
     """Heuristic fallback: no model needed, still no screen."""
-    minutes = minutes or 30
+    minutes = max(minutes or 30, 10)
     if energy == "low":
         steps = [
             f"Step outside and walk slowly around the block ({min(minutes, 15)} min, phone stays in your pocket)",
