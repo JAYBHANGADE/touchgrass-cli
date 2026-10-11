@@ -31,6 +31,12 @@ python3 touchgrass.py "i have 45 minutes and low energy"
 python3 touchgrass.py "full of energy, 1 hour before it gets dark"
 python3 touchgrass.py --file examples/tired_evening.txt
 python3 touchgrass.py --offline "20 min break"   # no model needed
+
+# Input validation examples
+
+python3 touchgrass.py
+python3 touchgrass.py ""
+python3 touchgrass.py "hello"
 ```
 
 Example output:
